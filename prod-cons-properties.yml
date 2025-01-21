@@ -1,0 +1,31 @@
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: all
+      retries: 3
+      enable-idempotence: true
+      delivery-timeout-ms: 300000
+      client-id: my-producer-client
+    properties:
+      security.protocol: SSL  # Assuming SSL is required
+
+
+
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: my-consumer-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      auto-offset-reset: earliest
+      enable-auto-commit: true
+      session-timeout-ms: 10000
+      heartbeat-interval-ms: 3000
+      max-poll-records: 500
+    properties:
+      security.protocol: SSL  # Assuming SSL is required
