@@ -80,4 +80,32 @@ public class ProducerService {
             return null;
         }
     }
+    private void sendMessage(int batchNum, Map<String, List<JsonNode>> recordsMap) {
+    System.out.println("Going to send messages for batch " + batchNum);
+    AtomicInteger msgCounter = new AtomicInteger(0);
+    int messagesPerSec = rdpProducerConfig.getMessagesPerSec();
+    long startTime = System.currentTimeMillis();
+
+    for (Map.Entry<String, List<JsonNode>> entry : recordsMap.entrySet()) {
+        String key = entry.getKey();
+        List<JsonNode> recordList = entry.getValue();
+        
+        if (!ObjectUtils.isEmpty(recordList)) {
+            for (JsonNode val : recordList) {
+                if (msgCounter.get() >= messagesPerSec) {
+                    break; // Stop processing if message limit is reached
+                }
+
+                String valAsJson = val.toString();
+                kafkaTemplate.send(topicName, key, valAsJson);
+                msgCounter.incrementAndGet();
+            }
+        }
+    }
+
+    long endTime = System.currentTimeMillis();
+    long elapsedTime = endTime - startTime;
+    System.out.println("Sent " + msgCounter.get() + " messages in " + elapsedTime + " ms");
+}
+
 }
