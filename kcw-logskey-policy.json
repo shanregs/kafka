@@ -1,0 +1,56 @@
+{
+	"Version": "2012-10-17",
+	"Id": "key-consolepolicy-3",
+	"Statement": [
+		{
+			"Effect": "Allow",
+			"Principal": {
+				"Service": "logs.amazonaws.com"
+			},
+			"Action": [
+				"kms:Encrypt",
+				"kms:Decrypt",
+				"kms:GenerateDataKey",
+				"kms:DescribeKey"
+			],
+			"Resource": "*"
+		},
+		{
+			"Sid": "Enable IAM User Permissions",
+			"Effect": "Allow",
+			"Principal": {
+				"AWS": "arn:aws:iam::445567091512:root"
+			},
+			"Action": "kms:*",
+			"Resource": "*"
+		},
+		{
+			"Sid": "Allow access for Key Administrators",
+			"Effect": "Allow",
+			"Principal": {
+				"AWS": [
+					"arn:aws:iam::445567091512:user/shan",
+					"arn:aws:iam::445567091512:user/aws_cdk"
+				]
+			},
+			"Action": [
+				"kms:Create*",
+				"kms:Describe*",
+				"kms:Enable*",
+				"kms:List*",
+				"kms:Put*",
+				"kms:Update*",
+				"kms:Revoke*",
+				"kms:Disable*",
+				"kms:Get*",
+				"kms:Delete*",
+				"kms:TagResource",
+				"kms:UntagResource",
+				"kms:ScheduleKeyDeletion",
+				"kms:CancelKeyDeletion",
+				"kms:RotateKeyOnDemand"
+			],
+			"Resource": "*"
+		}
+	]
+}
